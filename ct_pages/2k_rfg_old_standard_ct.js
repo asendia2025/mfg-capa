@@ -1,0 +1,40 @@
+const R2K_RFG_OLD_STANDARD_DATA = {
+    assembly: [
+        { type: "ASSEMBLY", sub: "TAKE PARTS OUT", no: 1, desc: "TAKE PARTS OUT OF WAREHOUSE", ct: 60 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 2, desc: "MAIN AMP", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 3, desc: "EXCITOR", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 4, desc: "R-DET OR SAW", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 5, desc: "LPF OR COMBINER", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 6, desc: "RF SENSOR", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 7, desc: "DRIVER AMP", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 8, desc: "SPLITTER", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT ASSEMBLY", no: 9, desc: "HEAT SINK INCLUDING LEAK TEST", ct: 30 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 10, desc: "MAIN AMP", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 11, desc: "EXCITOR", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 12, desc: "R-DET OR SAW", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 13, desc: "LPF OR COMBINER", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 14, desc: "RF SENSOR - COUPLING & ISOLATION", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 15, desc: "RF SENSOR - VOLTAGE", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 16, desc: "DRIVER AMP", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 17, desc: "SPLITTER", ct: 0 },
+        { type: "ASSEMBLY", sub: "UNIT CALIBRATION", no: 18, desc: "TROUBLE SHOOTING", ct: 60 },
+        { type: "ASSEMBLY", sub: "SUB ASSEMBLY", no: 19, desc: "REAR PANEL", ct: 40 },
+        { type: "ASSEMBLY", sub: "SUB ASSEMBLY", no: 20, desc: "FRONT PANEL", ct: 10 },
+        { type: "ASSEMBLY", sub: "SUB ASSEMBLY", no: 21, desc: "MIDDLE PANEL", ct: 30 },
+        { type: "ASSEMBLY", sub: "SUB ASSEMBLY", no: 22, desc: "POWER SUPPLY", ct: 25 },
+        { type: "ASSEMBLY", sub: "MAIN ASSEMBLY", no: 23, desc: "UNITS, CABLING, CASING", ct: 180 },
+        { type: "ASSEMBLY", sub: "PQC", no: 24, desc: "PQC", ct: 30 }
+    ],
+    test: [
+        { type: "TEST", sub: "BASIC TEST", no: 1, desc: "SHOCK TEST", ct: 3 },
+        { type: "TEST", sub: "BASIC TEST", no: 2, desc: "INSULATION & WITHSTANDING VOLTAGE", ct: 5 },
+        { type: "TEST", sub: "BASIC TEST", no: 3, desc: "PROGRAM DOWNLOAD", ct: 5 },
+        { type: "TEST", sub: "BASIC TEST", no: 4, desc: "FREQUENCY CAL, ALARM & COMMUNICATION TEST", ct: 60 },
+        { type: "TEST", sub: "BASIC TEST", no: 5, desc: "TROUBLE SHOOTING", ct: 60 },
+        { type: "TEST", sub: "FINAL TEST", no: 6, desc: "FINAL TEST", ct: 60 },
+        { type: "TEST", sub: "FINAL TEST", no: 7, desc: "TROUBLE SHOOTING", ct: 30 },
+        { type: "TEST", sub: "FINAL TEST", no: 8, desc: "RUNNING TEST", ct: 120 },
+        { type: "TEST", sub: "DOCUMENTATION", no: 9, desc: "TEST REPORT", ct: 10 },
+        { type: "TEST", sub: "SHIPPING PREPARATIONS", no: 10, desc: "PACKING", ct: 30 }
+    ]
+};
