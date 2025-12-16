@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Capacity Trend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script src="ct_pages/capa_data.js"></script>
+
+    <style>
+        body { font-family: 'Varela Round', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #d4d4d8; border-radius: 20px; }
+        
+        .table-cell { text-align: center; font-size: 11px; padding: 10px 4px; border-bottom: 1px solid #f4f4f5; color: #3f3f46; }
+        .table-header { font-size: 10px; font-weight: bold; color: #71717a; text-transform: uppercase; background-color: #fafafa; position: sticky; top: 0; white-space: nowrap; border-bottom: 2px solid #e4e4e7; }
+        
+        /* Tooltip (Header Only) */
+        .header-tooltip { position: relative; cursor: help; }
+        .header-tooltip:hover::after {
+            content: attr(data-tip); position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background-color: #27272a; color: white; padding: 8px 12px; border-radius: 6px;
+            font-size: 11px; white-space: pre-wrap; width: max-content; max-width: 250px; z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 5px; pointer-events: none; font-weight: normal; text-transform: none;
+        }
+    </style>
+</head>
+<body class="bg-white h-screen flex flex-col p-6 overflow-hidden relative">
+
+    <div class="flex items-center justify-between mb-6 shrink-0">
+        <h1 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="w-2 h-8 bg-blue-500 rounded-full"></span>
+            Monthly Capacity Trend
+        </h1>
+        
+        <div class="flex gap-4">
+            <div class="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg border border-zinc-200">
+                <button onclick="changeLabelSize(-2)" class="p-1.5 hover:bg-white rounded-md text-zinc-500 transition-colors" title="Decrease Text Size">
+                    <i data-lucide="minus" class="w-3 h-3"></i>
+                </button>
+                <span class="text-[10px] font-bold text-zinc-400 px-2 uppercase">Text Size</span>
+                <button onclick="changeLabelSize(2)" class="p-1.5 hover:bg-white rounded-md text-zinc-500 transition-colors" title="Increase Text Size">
+                    <i data-lucide="plus" class="w-3 h-3"></i>
+                </button>
+            </div>
+
+            <div class="flex gap-2 p-1 rounded-full bg-zinc-100/50 border border-zinc-200 shadow-inner">
+                <button onclick="renderDashboard('rfg')" id="tab-rfg" class="px-5 py-2 rounded-full text-xs font-bold transition-all shadow-sm bg-white text-blue-600 border border-zinc-100">RF Generator</button>
+                <button onclick="renderDashboard('rfm')" id="tab-rfm" class="px-5 py-2 rounded-full text-xs font-bold text-zinc-400 hover:text-zinc-600 transition-all">RF Matcher</button>
+                <button onclick="renderDashboard('evc')" id="tab-evc" class="px-5 py-2 rounded-full text-xs font-bold text-zinc-400 hover:text-zinc-600 transition-all">EVC</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-[45vh] w-full bg-white border border-zinc-200 rounded-xl p-4 mb-6 relative shrink-0 shadow-sm">
+        <canvas id="trendChart"></canvas>
+    </div>
+
+    <div class="flex-1 overflow-auto bg-white border border-zinc-200 rounded-xl relative shadow-sm">
+        <table class="w-full border-collapse">
+            <thead class="bg-zinc-50 sticky top-0 z-10">
+                <tr id="table-head-row">
+                    </tr>
+            </thead>
+            <tbody id="table-body">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        let chartInstance = null;
+        let currentModule = 'rfg';
+        // ★ Default Label Size: 3x larger (Standard ~10px * 3 = 30px)
+        let currentLabelSize = 30; 
+
+        function renderDashboard(module) {
+            currentModule = module;
+            
+            // Update Tabs Style
+            ['rfg', 'rfm', 'evc'].forEach(m => {
+                const btn = document.getElementById(`tab-${m}`);
+                if (m === module) {
+                    btn.classList.remove('text-zinc-400');
+                    btn.classList.add('bg-white', 'text-blue-600', 'shadow-sm', 'border', 'border-zinc-100');
+                } else {
+                    btn.classList.add('text-zinc-400');
+                    btn.classList.remove('bg-white', 'text-blue-600', 'shadow-sm', 'border', 'border-zinc-100');
+                }
+            });
+
+            if(typeof CAPA_DB === 'undefined') {
+                alert("Data file (capa_data.js) not found. Please check ct_pages folder.");
+                return;
+            }
+
+            const data = CAPA_DB[module] || [];
+            updateUI(data);
+        }
+
+        function updateUI(data) {
+            const labels = data.map(d => d.month);
+            const cleanData = (val) => (val === 0 || val === undefined ? null : val);
+
+            // ★ Calculate Y-Axis Max Value (Max Data + 20)
+            const maxCapacity = Math.max(...data.map(d => d.cap_mon || 0));
+            const yAxisMax = Math.ceil(maxCapacity + 20);
+
+            // 1. Chart Render
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Monthly Capacity',
+                            data: data.map(d => cleanData(d.cap_mon)),
+                            type: 'line', borderColor: '#2563eb', backgroundColor: '#2563eb',
+                            borderWidth: 2, yAxisID: 'y', tension: 0.3, spanGaps: false,
+                            datalabels: { 
+                                align: 'top', anchor: 'start', color: '#2563eb', 
+                                font: { weight: 'bold', size: currentLabelSize } // Dynamic Size
+                            }
+                        },
+                        {
+                            label: 'Assembly Staff',
+                            data: data.map(d => cleanData(d.assy)),
+                            backgroundColor: '#a1a1aa', yAxisID: 'y1',
+                            datalabels: { 
+                                color: 'white', 
+                                font: { size: Math.max(9, currentLabelSize * 0.4) } // Scale proportionally but keep min size
+                            }
+                        },
+                        {
+                            label: 'Testing Staff',
+                            data: data.map(d => cleanData(d.test)),
+                            backgroundColor: '#52525b', yAxisID: 'y1',
+                            datalabels: { 
+                                color: 'white', 
+                                font: { size: Math.max(9, currentLabelSize * 0.4) } // Scale proportionally but keep min size
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { usePointStyle: true, font: {family:"'Varela Round'", size: 11} } }, 
+                        datalabels: { display: true } 
+                    },
+                    scales: {
+                        y: { 
+                            type: 'linear', display: true, position: 'left',
+                            // ★ Apply Max Value Logic
+                            max: yAxisMax,
+                            title: {display:true, text:'Capacity (Units)', font:{family:"'Varela Round'"}}, 
+                            grid: {display:false, drawBorder: false} 
+                        },
+                        y1: { 
+                            type: 'linear', display: true, position: 'right', min:0, max:15, 
+                            title: {display:true, text:'Headcount', font:{family:"'Varela Round'"}}, 
+                            grid: {drawOnChartArea:false, drawBorder: false} 
+                        },
+                        x: { grid: {display: false} }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            // 2. Table Render (unchanged)
+            const thead = document.getElementById('table-head-row');
+            const tbody = document.getElementById('table-body');
+            
+            let headerHtml = `<th class="table-header px-4 py-3 border-b border-zinc-200 w-24 text-left">Item</th>`;
+            data.forEach(d => {
+                const note = d.note ? d.note.trim() : "";
+                const tooltipAttr = note ? `class="table-header px-4 py-3 border-b border-zinc-200 text-center header-tooltip text-blue-600" data-tip="${note}"` : `class="table-header px-4 py-3 border-b border-zinc-200 text-center"`;
+                const labelContent = note ? `${d.month} <span class="text-[9px] align-top text-blue-500">*</span>` : d.month;
+                headerHtml += `<th ${tooltipAttr}>${labelContent}</th>`;
+            });
+            thead.innerHTML = headerHtml;
+
+            const keys = [
+                { key: 'pm', label: 'Production Management Staff' },
+                { key: 'pt', label: 'Production Technology Staff' },
+                { key: 'assy', label: 'Assembly Staff' },
+                { key: 'test', label: 'Testing Staff' },
+                { key: 'tb', label: '# of Test Bench' },
+                { key: 'total', label: 'Total Staff', bold: true },
+                { key: 'cap_mon', label: 'Monthly Capacity', bold: true, color: 'text-blue-600' },
+                { key: 'cap_year', label: 'Yearly Capacity' }
+            ];
+
+            let rowsHtml = '';
+            keys.forEach(k => {
+                let row = `<tr><td class="px-4 py-2 text-xs font-bold text-zinc-500 border-b border-zinc-100 bg-zinc-50/30">${k.label}</td>`;
+                data.forEach(d => {
+                    const style = k.bold ? 'font-bold' : ''; 
+                    const color = k.color ? k.color : 'text-zinc-600';
+                    const cellClass = `class="table-cell ${style} ${color}"`;
+                    let val = d[k.key] !== undefined ? d[k.key] : '';
+                    if (val === 0 && k.key !== 'pm' && k.key !== 'pt') val = '-';
+                    row += `<td ${cellClass}>${val}</td>`;
+                });
+                row += '</tr>';
+                rowsHtml += row;
+            });
+            tbody.innerHTML = rowsHtml;
+        }
+
+        // ★ Function to Change Label Size Dynamically
+        function changeLabelSize(delta) {
+            currentLabelSize += delta;
+            // Prevent too small or too big
+            if(currentLabelSize < 8) currentLabelSize = 8;
+            if(currentLabelSize > 60) currentLabelSize = 60;
+            
+            // Re-render chart with new size
+            const data = CAPA_DB[currentModule] || [];
+            updateUI(data);
+        }
+
+        renderDashboard('rfg');
+    </script>
+</body>
+</html>
