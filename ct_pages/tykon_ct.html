@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tykon Cycle Time Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    
+    <script src="tykon_ct.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Varela Round"', 'sans-serif'] },
+                    colors: {
+                        zinc: { 50: '#fafafa', 100: '#f4f4f5', 200: '#e4e4e7', 300: '#d4d4d8', 400: '#a1a1aa', 500: '#71717a', 600: '#52525b', 700: '#3f3f46', 800: '#27272a', 900: '#18181b' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Varela Round', sans-serif; background-color: #f8fafc; }
+        .table-input { background: transparent; text-align: right; width: 100%; font-weight: bold; color: #2563eb; outline: none; }
+        .table-input:focus { border-bottom: 2px solid #3b82f6; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background-color: transparent; }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-zinc-700">
+
+    <header class="bg-white border-b border-zinc-200 shadow-sm z-20 shrink-0">
+        <div class="max-w-[1600px] mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-purple-100 rounded-lg text-purple-600">
+                    <i data-lucide="wind" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-zinc-800">Tykon Cycle Time Analysis</h1>
+                    <p class="text-xs text-zinc-400">Standard CT Management</p>
+                </div>
+            </div>
+
+            <div class="flex gap-6">
+                <div class="flex items-center gap-3 bg-zinc-50 px-4 py-2 rounded-xl border border-zinc-100">
+                    <div class="text-right">
+                        <div class="text-[10px] font-bold text-zinc-400 uppercase">Assembly Total</div>
+                        <div class="text-sm font-bold text-zinc-700">
+                            <span id="summary-assy-min" class="text-lg text-green-600">0</span> min
+                            <span class="text-zinc-300 mx-1">|</span>
+                            <span id="summary-assy-hrs" class="text-zinc-500">0</span> hr
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-zinc-50 px-4 py-2 rounded-xl border border-zinc-100">
+                    <div class="text-right">
+                        <div class="text-[10px] font-bold text-zinc-400 uppercase">Test Total</div>
+                        <div class="text-sm font-bold text-zinc-700">
+                            <span id="summary-test-min" class="text-lg text-blue-600">0</span> min
+                            <span class="text-zinc-300 mx-1">|</span>
+                            <span id="summary-test-hrs" class="text-zinc-500">0</span> hr
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="resetToStandard()" class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-zinc-500 hover:bg-zinc-100 rounded-lg transition-colors" title="Reset to Factory Standard">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
+                </button>
+                <button onclick="saveCurrentState()" class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-zinc-800 hover:bg-zinc-900 rounded-lg shadow-md transition-all active:scale-95">
+                    <i data-lucide="save" class="w-4 h-4"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden max-w-[1600px] mx-auto w-full p-4 gap-4">
+        
+        <section class="flex-1 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-zinc-100 bg-zinc-50/50 flex justify-between items-center shrink-0">
+                <h2 class="font-bold text-zinc-700 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span> Assembly Process
+                </h2>
+                <span class="text-xs bg-zinc-200 px-2 py-0.5 rounded text-zinc-500 font-mono" id="count-assy">0 items</span>
+            </div>
+            <div class="flex-1 overflow-auto p-0">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead class="bg-zinc-50 text-zinc-400 font-bold uppercase sticky top-0 z-10">
+                        <tr>
+                            <th class="px-4 py-3 border-b border-zinc-100 w-12 text-center">No</th>
+                            <th class="px-4 py-3 border-b border-zinc-100 w-20">Sub</th>
+                            <th class="px-4 py-3 border-b border-zinc-100">Description</th>
+                            <th class="px-4 py-3 border-b border-zinc-100 w-24 text-right">CT (min)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-assembly"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="flex-1 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-zinc-100 bg-zinc-50/50 flex justify-between items-center shrink-0">
+                <h2 class="font-bold text-zinc-700 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-500"></span> Test Process
+                </h2>
+                <span class="text-xs bg-zinc-200 px-2 py-0.5 rounded text-zinc-500 font-mono" id="count-test">0 items</span>
+            </div>
+            <div class="flex-1 overflow-auto p-0">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead class="bg-zinc-50 text-zinc-400 font-bold uppercase sticky top-0 z-10">
+                        <tr>
+                            <th class="px-4 py-3 border-b border-zinc-100 w-12 text-center">No</th>
+                            <th class="px-4 py-3 border-b border-zinc-100 w-24">Sub</th>
+                            <th class="px-4 py-3 border-b border-zinc-100">Description</th>
+                            <th class="px-4 py-3 border-b border-zinc-100 w-24 text-right">CT (min)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-test"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // State Management
+        let currentData = { assembly: [], test: [] };
+
+        // 1. System Initialization
+        function initSystem() {
+            // Check if standard data file is loaded
+            if (typeof TYKON_CT === 'undefined') {
+                alert("Error: 'tykon_ct.js' file not found!");
+                return;
+            }
+
+            // Load from LocalStorage or Standard
+            const savedData = localStorage.getItem('tykon_current_data');
+            
+            if (savedData) {
+                currentData = JSON.parse(savedData);
+            } else {
+                // Parse Standard Flat Data into Assembly/Test structure
+                parseStandardData();
+            }
+
+            renderAll();
+        }
+
+        // Helper: Convert flat TYKON_CT array to split object
+        function parseStandardData() {
+            currentData.assembly = TYKON_CT.filter(item => item.type === "ASSEMBLY");
+            currentData.test = TYKON_CT.filter(item => item.type === "TEST");
+        }
+
+        // 2. Rendering
+        function renderAll() {
+            renderTable('assembly', 'table-assembly', 'count-assy');
+            renderTable('test', 'table-test', 'count-test');
+            calculateTotalCT();
+        }
+
+        function renderTable(type, tableId, countId) {
+            const tbody = document.getElementById(tableId);
+            const data = currentData[type];
+            tbody.innerHTML = '';
+            
+            document.getElementById(countId).innerText = data.length + " items";
+
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-zinc-50 border-b border-zinc-50 group transition-colors";
+                
+                // Highlight PQC rows
+                if(item.sub && item.sub.includes('PQC')) {
+                    tr.classList.add('bg-orange-50/30');
+                }
+
+                const subBadge = item.sub ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-zinc-100 text-zinc-500">${item.sub}</span>` : '-';
+
+                tr.innerHTML = `
+                    <td class="px-4 py-2 text-center text-zinc-400 font-mono">${item.no}</td>
+                    <td class="px-4 py-2">${subBadge}</td>
+                    <td class="px-4 py-2 font-medium text-zinc-600">${item.desc}</td>
+                    <td class="px-4 py-2">
+                        <input type="number" 
+                            step="0.1" 
+                            class="table-input bg-transparent hover:bg-white focus:bg-white rounded px-2 py-1 transition-all" 
+                            value="${item.ct}" 
+                            onchange="updateData('${type}', ${index}, this.value)">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 3. Logic & State Updates
+        function updateData(type, index, value) {
+            currentData[type][index].ct = parseFloat(value) || 0;
+            calculateTotalCT();
+        }
+
+        function calculateTotalCT() {
+            let assyTotal = 0, testTotal = 0;
+            
+            currentData.assembly.forEach(item => assyTotal += item.ct);
+            currentData.test.forEach(item => testTotal += item.ct);
+
+            // Update UI
+            // Using toLocaleString for prettier numbers
+            document.getElementById('summary-assy-min').innerText = Math.round(assyTotal).toLocaleString();
+            document.getElementById('summary-assy-hrs').innerText = (assyTotal / 60).toFixed(1);
+            
+            document.getElementById('summary-test-min').innerText = Math.round(testTotal).toLocaleString();
+            document.getElementById('summary-test-hrs').innerText = (testTotal / 60).toFixed(1);
+        }
+
+        // 4. Persistence
+        function saveCurrentState() {
+            localStorage.setItem('tykon_current_data', JSON.stringify(currentData));
+            
+            // Visual Feedback
+            const btn = document.querySelector('button[onclick="saveCurrentState()"]');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Saved!`;
+            btn.classList.remove('bg-zinc-800');
+            btn.classList.add('bg-green-600');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.add('bg-zinc-800');
+                btn.classList.remove('bg-green-600');
+                lucide.createIcons();
+            }, 1500);
+        }
+
+        function resetToStandard() {
+            if(confirm("Reset all Tykon data to Factory Standard?\n(This will erase your custom changes)")) {
+                if (typeof TYKON_CT !== 'undefined') {
+                    // Re-parse from the const file
+                    parseStandardData();
+                    localStorage.removeItem('tykon_current_data');
+                    renderAll();
+                }
+            }
+        }
+
+        // Start
+        initSystem();
+
+    </script>
+</body>
+</html>
