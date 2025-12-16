@@ -35,6 +35,54 @@ const CAPA_DB = {
       "cap_mon": 67.8,
       "cap_year": 813,
       "note": "생산관리자 : 유주영 0.5, 권용일 0.5, 시몬 0.5 생산기술자 강지승, 테스터 : 빈, 유준, 루안"
+    },
+    {
+      "month": "Feb 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "Mar 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "Apr 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "May 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
     }
   ],
   "rfm": [
@@ -73,6 +121,54 @@ const CAPA_DB = {
       "cap_mon": 99.8,
       "cap_year": 1198,
       "note": "생산관리자 : 유주영 0.5, 장미숙 0.5 생산기술자 : 이루리"
+    },
+    {
+      "month": "Feb 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "Mar 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "Apr 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "May 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
     }
   ],
   "evc": [
@@ -111,6 +207,54 @@ const CAPA_DB = {
       "cap_mon": 48,
       "cap_year": 514,
       "note": "생산관리자 :  권용일 0.5, 박범준, 조재영, 테스트벤치 tykon 3, quantum 3"
+    },
+    {
+      "month": "Feb 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "Mar 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "Apr 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
+    },
+    {
+      "month": "May 2026",
+      "pm": 0,
+      "pt": 0,
+      "assy": 0,
+      "test": 0,
+      "tb": 0,
+      "total": 0,
+      "cap_mon": 0,
+      "cap_year": 0,
+      "note": ""
     }
   ]
 };
