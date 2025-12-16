@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capa Data Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <script src="ct_pages/capa_data.js"></script>
+    
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['"Varela Round"', 'sans-serif'] } } } }
+    </script>
+    <style>
+        body { font-family: 'Varela Round', sans-serif !important; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="bg-zinc-100 min-h-screen p-8 selection:bg-zinc-800 selection:text-white">
+
+    <div class="max-w-[1400px] mx-auto bg-white rounded-xl shadow-lg p-8 border border-zinc-200">
+        <header class="flex justify-between items-center mb-8 border-b border-zinc-100 pb-4">
+            <div>
+                <h1 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+                    <i data-lucide="database" class="w-6 h-6 text-blue-600"></i>
+                    Capacity Data Manager
+                </h1>
+                <p class="text-sm text-zinc-500 mt-1">Manage monthly staffing and capacity data.</p>
+            </div>
+            <button onclick="downloadJS()" class="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 hover:bg-zinc-900 text-white rounded-lg font-bold transition-all shadow-md text-sm">
+                <i data-lucide="download" class="w-4 h-4"></i> Save & Download File
+            </button>
+        </header>
+
+        <div class="flex gap-4 mb-6">
+            <button onclick="switchModule('rfg')" id="btn-rfg" class="flex-1 py-3 rounded-lg border border-zinc-200 font-bold text-zinc-500 hover:bg-zinc-50 transition-all shadow-sm">RF Generator</button>
+            <button onclick="switchModule('rfm')" id="btn-rfm" class="flex-1 py-3 rounded-lg border border-zinc-200 font-bold text-zinc-500 hover:bg-zinc-50 transition-all shadow-sm">RF Matcher</button>
+            <button onclick="switchModule('evc')" id="btn-evc" class="flex-1 py-3 rounded-lg border border-zinc-200 font-bold text-zinc-500 hover:bg-zinc-50 transition-all shadow-sm">EVC</button>
+        </div>
+
+        <div class="overflow-x-auto border border-zinc-200 rounded-lg shadow-sm">
+            <table class="w-full text-xs text-left whitespace-nowrap">
+                <thead class="text-[10px] font-bold text-zinc-500 uppercase bg-zinc-50 border-b border-zinc-200">
+                    <tr>
+                        <th class="px-3 py-3 w-24">Month</th>
+                        <th class="px-2 py-3 text-center w-20">Production<br>Management</th>
+                        <th class="px-2 py-3 text-center w-20">Production<br>Technology</th>
+                        <th class="px-2 py-3 text-center w-20">Assembly<br>Staff</th>
+                        <th class="px-2 py-3 text-center w-20">Testing<br>Staff</th>
+                        <th class="px-2 py-3 text-center w-20 bg-zinc-50 border-l border-zinc-200"># of<br>Test Bench</th>
+                        <th class="px-2 py-3 text-center bg-blue-50/50 text-blue-600 border-l border-blue-100">Total<br>Staff</th>
+                        <th class="px-2 py-3 text-center w-24 text-zinc-700">Monthly<br>Capacity</th>
+                        <th class="px-2 py-3 text-center w-24 text-zinc-700">Yearly<br>Capacity</th>
+                        <th class="px-4 py-3 w-64">Note <span class="normal-case font-normal text-zinc-400">(Max 100)</span></th>
+                        <th class="px-2 py-3 text-center w-12">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="editor-body" class="divide-y divide-zinc-100"></tbody>
+            </table>
+        </div>
+
+        <div class="mt-4 p-4 bg-zinc-50/50 rounded-lg border border-zinc-200 flex gap-3 items-end">
+            <div class="w-48">
+                <label class="text-[10px] font-bold text-zinc-400 uppercase mb-1 block">New Month</label>
+                <input type="text" id="new-month" placeholder="e.g. Mar 2026" class="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm focus:outline-none focus:border-blue-500 transition-colors">
+            </div>
+            <button onclick="addNewRow()" class="px-4 py-2 bg-blue-600 text-white rounded-md font-bold text-sm hover:bg-blue-700 shadow-sm transition-colors flex items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Add Row
+            </button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        let currentModule = 'rfg';
+        let localData = (typeof CAPA_DB !== 'undefined') ? JSON.parse(JSON.stringify(CAPA_DB)) : { rfg:[], rfm:[], evc:[] };
+
+        function switchModule(mod) {
+            currentModule = mod;
+            ['rfg', 'rfm', 'evc'].forEach(m => {
+                const btn = document.getElementById(`btn-${m}`);
+                if(m === mod) {
+                    btn.classList.remove('text-zinc-500', 'bg-white');
+                    btn.classList.add('text-blue-600', 'bg-blue-50', 'border-blue-200');
+                } else {
+                    btn.classList.add('text-zinc-500', 'bg-white');
+                    btn.classList.remove('text-blue-600', 'bg-blue-50', 'border-blue-200');
+                }
+            });
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('editor-body');
+            tbody.innerHTML = '';
+            
+            localData[currentModule].forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-zinc-50 transition-colors group";
+                
+                const numInputClass = "w-full p-1.5 border border-zinc-200 rounded text-center text-zinc-700 focus:border-blue-400 focus:outline-none text-xs font-medium";
+                const textInputClass = "w-full p-1.5 border border-zinc-200 rounded text-left text-zinc-700 focus:border-blue-400 focus:outline-none text-xs";
+                const totalStaff = (row.pm + row.pt + row.assy + row.test).toFixed(1);
+
+                tr.innerHTML = `
+                    <td class="px-3 py-2 font-bold text-zinc-600 bg-zinc-50/30">${row.month}</td>
+                    <td class="px-2 py-2"><input type="number" step="0.5" value="${row.pm}" onchange="updateData(${index}, 'pm', this.value)" class="${numInputClass}"></td>
+                    <td class="px-2 py-2"><input type="number" step="0.5" value="${row.pt}" onchange="updateData(${index}, 'pt', this.value)" class="${numInputClass}"></td>
+                    <td class="px-2 py-2"><input type="number" step="0.5" value="${row.assy}" onchange="updateData(${index}, 'assy', this.value)" class="${numInputClass}"></td>
+                    <td class="px-2 py-2"><input type="number" step="0.5" value="${row.test}" onchange="updateData(${index}, 'test', this.value)" class="${numInputClass}"></td>
+                    <td class="px-2 py-2 border-l border-zinc-100"><input type="number" step="1" value="${row.tb}" onchange="updateData(${index}, 'tb', this.value)" class="${numInputClass} bg-zinc-50 text-zinc-500"></td>
+                    <td class="px-2 py-2 text-center bg-blue-50/30 border-l border-blue-50"><span class="font-bold text-blue-700 text-xs block py-1">${parseFloat(totalStaff)}</span></td>
+                    <td class="px-2 py-2"><input type="number" step="0.1" value="${row.cap_mon}" onchange="updateData(${index}, 'cap_mon', this.value)" class="${numInputClass} font-bold text-zinc-800"></td>
+                    <td class="px-2 py-2"><input type="number" step="1" value="${row.cap_year}" onchange="updateData(${index}, 'cap_year', this.value)" class="${numInputClass} text-zinc-500"></td>
+                    
+                    <td class="px-4 py-2">
+                        <input type="text" value="${row.note}" maxlength="100" onchange="updateData(${index}, 'note', this.value)" class="${textInputClass}" placeholder="...">
+                    </td>
+                    
+                    <td class="px-2 py-2 text-center">
+                        <button onclick="deleteRow(${index})" class="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function updateData(index, key, value) {
+            if (key === 'note' || key === 'month') {
+                localData[currentModule][index][key] = value;
+            } else {
+                localData[currentModule][index][key] = parseFloat(value) || 0;
+            }
+            const d = localData[currentModule][index];
+            const sum = d.pm + d.pt + d.assy + d.test;
+            d.total = parseFloat(sum.toFixed(1));
+            renderTable();
+        }
+
+        function addNewRow() {
+            const monthInput = document.getElementById('new-month');
+            if(!monthInput.value) return alert("Please enter a month name.");
+            localData[currentModule].push({ month: monthInput.value, pm: 0, pt: 0, assy: 0, test: 0, tb: 0, total: 0, cap_mon: 0, cap_year: 0, note: "" });
+            monthInput.value = '';
+            renderTable();
+        }
+
+        function deleteRow(index) {
+            if(confirm("Delete this row?")) { localData[currentModule].splice(index, 1); renderTable(); }
+        }
+
+        function downloadJS() {
+            const dataStr = "const CAPA_DB = " + JSON.stringify(localData, null, 2) + ";";
+            const blob = new Blob([dataStr], { type: "text/javascript" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = "capa_data.js";
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            alert("✅ capa_data.js saved!\n\nPlease overwrite the existing file in the 'ct_pages' folder.");
+        }
+
+        switchModule('rfg');
+    </script>
+</body>
+</html>
