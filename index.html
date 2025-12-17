@@ -133,11 +133,22 @@
                     </nav>
                 </div>
 
+                <div class="flex items-center gap-3 px-3 pt-6 border-t border-zinc-200 mt-6">
+                    <div class="w-8 h-8 rounded-lg overflow-hidden border border-zinc-200 bg-white shrink-0">
+                        <img src="img/logo_company.png" alt="MTC" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[10px] font-bold text-zinc-900 leading-tight">Manufacturing<br>Technology Center</span>
+                        <span class="text-[9px] text-zinc-500 mt-0.5">V1.0</span>
+                    </div>
+                </div>
+
                 <div class="mt-auto pt-4 border-t border-zinc-200">
                     <a href="capa_admin.html" target="_blank" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all group">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-blue-600"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg> Capa Admin
                     </a>
                 </div>
+
             </aside>
 
             <main class="flex-1 overflow-y-auto bg-zinc-100/50 scroll-smooth p-8 md:p-12 relative">
@@ -279,9 +290,7 @@
                         <p class="text-zinc-500 mt-2 text-lg">Analysis for Quantum & Tykon platforms.</p>
                     </header>
 
-                    <div class="bg-white rounded-xl border border-zinc-200 p-6 md:p-8 shadow-sm mb-10"><h3 class="text-lg font-bold text-zinc-900 mb-6 border-b border-zinc-100 pb-2">Combined Model</h3><div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><div class="space-y-4"><h4 class="text-xs font-bold text-zinc-400 uppercase">Resources</h4><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Assy HC</label><input type="number" id="evc_com_total_assy_worker" value="5.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Test HC</label><input type="number" id="evc_com_total_test_worker" value="4.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Lines</label><input type="number" id="evc_com_total_lines" value="4" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 focus:outline-none focus:border-zinc-400" onchange="calculateAll()"><div class="text-[10px] mt-1 text-right text-zinc-400">Max: <span id="evc_com_max_usable_lines" class="font-bold text-zinc-600">0</span></div></div></div><div class="space-y-4"><h4 class="text-xs font-bold text-zinc-400 uppercase">Strategy</h4><div><label class="block text-[10px] font-bold text-emerald-500 uppercase mb-1">Tykon Alloc %</label><div class="flex items-center gap-2"><input type="number" id="evc_tykon_alloc_pct" value="40" class="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-lg px-3 py-2 text-emerald-900 font-bold focus:outline-none focus:border-emerald-300" onchange="calculateAll()"><span class="text-xs text-zinc-400">Quant: <span id="evc_quantum_alloc_disp">60</span>%</span></div></div><div class="grid grid-cols-2 gap-3"><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Tykon Assy R.</label><input type="number" id="evc_tykon_assy_ratio" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"></div><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Tykon Test R.</label><input type="number" id="evc_tykon_test_ratio" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"></div></div><div><h4 class="text-[10px] font-bold text-zinc-400 uppercase mb-2 mt-2">Baseline (Quantum)</h4><div class="grid grid-cols-2 gap-3"><input type="number" id="evc_q_base_assy_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"><input type="number" id="evc_q_base_test_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"></div></div></div><div class="rounded-xl p-6 text-center flex flex-col justify-center relative overflow-hidden group"><div class="absolute inset-0 z-0"><img src="img/back_cap.jpg" class="w-full h-full object-cover" alt="Background" onerror="this.style.display='none'"></div><div class="absolute inset-0 z-0 bg-zinc-900/95"></div><div class="relative z-10"><div class="text-[10px] font-bold text-zinc-300 uppercase mb-1">Total Yearly Capacity</div><div class="text-3xl font-medium text-white tracking-tight mb-4" id="evc_com_total_capa_y">0</div><div class="grid grid-cols-2 gap-2 text-xs text-zinc-400 border-t border-zinc-600/50 pt-3"><div>D: <span id="evc_com_total_capa_d" class="text-zinc-300">0</span></div><div>M: <span id="evc_com_total_capa_m" class="text-zinc-300">0</span></div></div><div id="evc_com_bottleneck" class="mt-4 text-[9px] font-bold text-red-200 uppercase">Calculating...</div></div></div></div></div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="bg-white rounded-xl border border-zinc-200 p-6 shadow-sm"><h3 class="text-sm font-bold text-zinc-900 mb-4 flex justify-between">Quantum (Indiv.)<span class="w-2 h-2 rounded-full bg-blue-500"></span></h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy CT</label><input type="number" id="evc_q_assy_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy HC</label><input type="number" id="evc_q_assy_worker" value="3.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="grid grid-cols-3 gap-2"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test CT</label><input type="number" id="evc_q_test_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test HC</label><input type="number" id="evc_q_test_worker" value="3.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Lines</label><input type="number" id="evc_q_line" value="3" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="bg-zinc-50 rounded-lg p-3 text-center border border-zinc-100 mt-4"><div class="text-[10px] font-bold text-zinc-400 uppercase">Daily Capa</div><div class="text-xl font-bold text-zinc-900" id="evc_q_capa_d">0</div><div class="text-[9px] text-zinc-400 mt-1" id="evc_q_bottleneck"></div></div></div></div><div class="bg-white rounded-xl border border-zinc-200 p-6 shadow-sm"><h3 class="text-sm font-bold text-zinc-900 mb-4 flex justify-between">Tykon (Indiv.)<span class="w-2 h-2 rounded-full bg-emerald-500"></span></h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy CT</label><input type="number" id="evc_t_assy_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy HC</label><input type="number" id="evc_t_assy_worker" value="2.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="grid grid-cols-3 gap-2"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test CT</label><input type="number" id="evc_t_test_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test HC</label><input type="number" id="evc_t_test_worker" value="2.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Lines</label><input type="number" id="evc_t_line" value="3" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="bg-zinc-50 rounded-lg p-3 text-center border border-zinc-100 mt-4"><div class="text-[10px] font-bold text-zinc-400 uppercase">Daily Capa</div><div class="text-xl font-bold text-zinc-900" id="evc_t_capa_d">0</div><div class="text-[9px] text-zinc-400 mt-1" id="evc_t_bottleneck"></div></div></div></div></div>
+                    <div class="bg-white rounded-xl border border-zinc-200 p-6 md:p-8 shadow-sm mb-10"><h3 class="text-lg font-bold text-zinc-900 mb-6 border-b border-zinc-100 pb-2">Combined Model</h3><div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><div class="space-y-4"><h4 class="text-xs font-bold text-zinc-400 uppercase">Resources</h4><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Assy HC</label><input type="number" id="evc_com_total_assy_worker" value="5.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Test HC</label><input type="number" id="evc_com_total_test_worker" value="4.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Lines</label><input type="number" id="evc_com_total_lines" value="4" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 focus:outline-none focus:border-zinc-400" onchange="calculateAll()"><div class="text-[10px] mt-1 text-right text-zinc-400">Max: <span id="evc_com_max_usable_lines" class="font-bold text-zinc-600">0</span></div></div></div><div class="space-y-4"><h4 class="text-xs font-bold text-zinc-400 uppercase">Strategy</h4><div><label class="block text-[10px] font-bold text-emerald-500 uppercase mb-1">Tykon Alloc %</label><div class="flex items-center gap-2"><input type="number" id="evc_tykon_alloc_pct" value="40" class="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-lg px-3 py-2 text-emerald-900 font-bold focus:outline-none focus:border-emerald-300" onchange="calculateAll()"><span class="text-xs text-zinc-400">Quant: <span id="evc_quantum_alloc_disp">60</span>%</span></div></div><div class="grid grid-cols-2 gap-3"><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Tykon Assy R.</label><input type="number" id="evc_tykon_assy_ratio" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"></div><div><label class="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Tykon Test R.</label><input type="number" id="evc_tykon_test_ratio" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"></div></div><div><h4 class="text-[10px] font-bold text-zinc-400 uppercase mb-2 mt-2">Baseline (Quantum)</h4><div class="grid grid-cols-2 gap-3"><input type="number" id="evc_q_base_assy_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"><input type="number" id="evc_q_base_test_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1.5 text-sm" onchange="calculateAll()"></div></div></div><div class="rounded-xl p-6 text-center flex flex-col justify-center relative overflow-hidden group"><div class="absolute inset-0 z-0"><img src="img/back_cap.jpg" class="w-full h-full object-cover" alt="Background" onerror="this.style.display='none'"></div><div class="absolute inset-0 z-0 bg-zinc-900/95"></div><div class="relative z-10"><div class="text-[10px] font-bold text-zinc-300 uppercase mb-1">Total Yearly Capacity</div><div class="text-3xl font-medium text-white tracking-tight mb-4" id="evc_com_total_capa_y">0</div><div class="grid grid-cols-2 gap-2 text-xs text-zinc-400 border-t border-zinc-600/50 pt-3"><div>D: <span id="evc_com_total_capa_d" class="text-zinc-300">0</span></div><div>M: <span id="evc_com_total_capa_m" class="text-zinc-300">0</span></div></div><div id="evc_com_bottleneck" class="mt-4 text-[9px] font-bold text-red-200 uppercase">Calculating...</div></div></div></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="bg-white rounded-xl border border-zinc-200 p-6 shadow-sm"><h3 class="text-sm font-bold text-zinc-900 mb-4 flex justify-between">Quantum (Indiv.)<span class="w-2 h-2 rounded-full bg-blue-500"></span></h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy CT</label><input type="number" id="evc_q_assy_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy HC</label><input type="number" id="evc_q_assy_worker" value="3.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="grid grid-cols-3 gap-2"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test CT</label><input type="number" id="evc_q_test_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test HC</label><input type="number" id="evc_q_test_worker" value="3.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Lines</label><input type="number" id="evc_q_line" value="3" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="bg-zinc-50 rounded-lg p-3 text-center border border-zinc-100 mt-4"><div class="text-[10px] font-bold text-zinc-400 uppercase">Daily Capa</div><div class="text-xl font-bold text-zinc-900" id="evc_q_capa_d">0</div><div class="text-[9px] text-zinc-400 mt-1" id="evc_q_bottleneck"></div></div></div></div><div class="bg-white rounded-xl border border-zinc-200 p-6 shadow-sm"><h3 class="text-sm font-bold text-zinc-900 mb-4 flex justify-between">Tykon (Indiv.)<span class="w-2 h-2 rounded-full bg-emerald-500"></span></h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy CT</label><input type="number" id="evc_t_assy_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Assy HC</label><input type="number" id="evc_t_assy_worker" value="2.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="grid grid-cols-3 gap-2"><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test CT</label><input type="number" id="evc_t_test_tat" step="0.01" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Test HC</label><input type="number" id="evc_t_test_worker" value="2.0" step="0.1" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div><div><label class="label-text text-[10px] font-bold text-zinc-400 uppercase">Lines</label><input type="number" id="evc_t_line" value="3" class="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-zinc-800 text-sm focus:outline-none focus:border-zinc-400" onchange="calculateAll()"></div></div><div class="bg-zinc-50 rounded-lg p-3 text-center border border-zinc-100 mt-4"><div class="text-[10px] font-bold text-zinc-400 uppercase">Daily Capa</div><div class="text-xl font-bold text-zinc-900" id="evc_t_capa_d">0</div><div class="text-[9px] text-zinc-400 mt-1" id="evc_t_bottleneck"></div></div></div></div></div>
                 </div>
 
                 <div id="view-iframe-container" class="w-full h-full hidden fade-in pt-8">
@@ -295,15 +304,15 @@
     <script>
         lucide.createIcons();
 
-        // [함수] CT 합계 계산 유틸리티
         function getSumCT(processArray) {
             if (!processArray) return 0;
             return processArray.reduce((acc, item) => acc + item.ct, 0);
         }
 
-        // [함수] 데이터 초기화 및 비율 자동 계산
+        // [INIT] EVC 자동 데이터 설정 및 RF Ratio 자동 계산
         function initDataFromStandard() {
-            // --- 1. RF Generator 로직 ---
+            // --- 1. RF Generator Logic ---
+            // Data Variable check: R2K_RFG_STANDARD_CT or R2K_RFG_STANDARD_DATA (Fallback)
             const r2kData = (typeof R2K_RFG_STANDARD_CT !== 'undefined') ? R2K_RFG_STANDARD_CT : 
                             ((typeof R2K_RFG_STANDARD_DATA !== 'undefined') ? R2K_RFG_STANDARD_DATA : null);
             
@@ -321,16 +330,19 @@
                 if(r1kData) {
                     const assy1k = getSumCT(r1kData.assembly || []);
                     const test1k = getSumCT(r1kData.test || []);
+                    
                     if (totalAssyMin > 0) document.getElementById('rfg_1k_assy_ratio').value = ((assy1k / totalAssyMin) * 100).toFixed(0);
                     if (totalTestMin > 0) document.getElementById('rfg_1k_test_ratio').value = ((test1k / totalTestMin) * 100).toFixed(0);
                 }
             }
 
-            // --- 2. RF Matcher 로직 ---
+            // --- 2. RF Matcher Logic ---
             const drfmData = (typeof DRFM_STANDARD_CT !== 'undefined') ? DRFM_STANDARD_CT : 
                              ((typeof DRFM_STANDARD_DATA !== 'undefined') ? DRFM_STANDARD_DATA : null);
+            
             const srfmData = (typeof SRFM_STANDARD_CT !== 'undefined') ? SRFM_STANDARD_CT : 
                              ((typeof SRFM_STANDARD_DATA !== 'undefined') ? SRFM_STANDARD_DATA : null);
+
             const osrfmData = (typeof OSRFM_STANDARD_CT !== 'undefined') ? OSRFM_STANDARD_CT : 
                               ((typeof OSRFM_STANDARD_DATA !== 'undefined') ? OSRFM_STANDARD_DATA : null);
 
@@ -359,7 +371,7 @@
                 }
             }
 
-            // --- 3. EVC 로직 ---
+            // --- 3. EVC Logic ---
             let qAssyHrs = 6.0, qTestHrs = 8.0; 
             if(typeof QUANTUM_CT !== 'undefined') {
                 const qAssyMin = QUANTUM_CT.filter(i => i.type === 'ASSEMBLY').reduce((a,b) => a + b.ct, 0);
@@ -367,15 +379,16 @@
                 qAssyHrs = qAssyMin / 60;
                 qTestHrs = qTestMin / 60;
 
-                // Quantum Indiv 설정
+                // Set Quantum Indiv. Inputs
                 document.getElementById('evc_q_assy_tat').value = qAssyHrs.toFixed(2);
                 document.getElementById('evc_q_test_tat').value = qTestHrs.toFixed(2);
                 
-                // Baseline 설정
+                // Set Baseline Inputs
                 document.getElementById('evc_q_base_assy_tat').value = qAssyHrs.toFixed(2);
                 document.getElementById('evc_q_base_test_tat').value = qTestHrs.toFixed(2);
             }
 
+            // Tykon Data Load
             let tAssyHrs = 5.0, tTestHrs = 6.5; 
             if(typeof TYKON_CT !== 'undefined') {
                 const tAssyMin = TYKON_CT.filter(i => i.type === 'ASSEMBLY').reduce((a,b) => a + b.ct, 0);
@@ -383,12 +396,12 @@
                 tAssyHrs = tAssyMin / 60;
                 tTestHrs = tTestMin / 60;
 
-                // Tykon Indiv 설정
+                // Set Tykon Indiv. Inputs
                 document.getElementById('evc_t_assy_tat').value = tAssyHrs.toFixed(2);
                 document.getElementById('evc_t_test_tat').value = tTestHrs.toFixed(2);
             }
 
-            // Ratio 자동 계산
+            // Strategy Ratio Auto-Calculation
             if (qAssyHrs > 0 && qTestHrs > 0) {
                 const assyRatio = (tAssyHrs / qAssyHrs) * 100;
                 const testRatio = (tTestHrs / qTestHrs) * 100;
@@ -401,27 +414,22 @@
         const products = [ { id: 'evc_q' }, { id: 'evc_t' } ];
         const KR_WORKING_DAYS = { '2024': 247, '2025': 246, '2026': 247, '2027': 247 };
 
-        // [UI 헬퍼 함수]
         function getVal(id) { return parseFloat(document.getElementById(id).value) || 0; }
         function setHTML(id, val) { const el = document.getElementById(id); if(el) el.innerHTML = val; }
         function fmt(num) { return num.toLocaleString(undefined, { maximumFractionDigits: 1, minimumFractionDigits: 0 }); }
         
-        // [Capa 계산 공식]
         function calculateCapacity(hc, tat, hours, lines = null) {
             if (tat <= 0) return 0;
             let effectiveResource = hc;
-            if (lines !== null) effectiveResource = Math.min(hc, lines); // 라인 제약 반영
+            if (lines !== null) effectiveResource = Math.min(hc, lines);
             return (effectiveResource * hours) / tat;
         }
 
-        // [페이지 전환 함수]
         function loadPage(url, btnElement) {
-            // 모든 탭 숨기기
             ['rfg', 'rfm', 'evc'].forEach(t => {
                 document.getElementById('view-' + t).classList.add('hidden');
                 document.getElementById('nav-' + t).classList.remove('bg-zinc-200', 'text-zinc-900');
             });
-            // IFrame 보이기
             document.getElementById('view-iframe-container').classList.remove('hidden');
             document.getElementById('ct-content-frame').src = url;
             
@@ -432,7 +440,6 @@
             }
         }
 
-        // [탭 전환 함수]
         function switchTab(tabName) {
             document.getElementById('view-iframe-container').classList.add('hidden');
             ['rfg', 'rfm', 'evc'].forEach(t => {
@@ -459,7 +466,6 @@
             selector.value = years.includes(currentYear.toString()) ? currentYear.toString() : '2025';
         }
 
-        // [전체 재계산 함수]
         function calculateAll() {
             const hours = getVal('globalWorkTime');
             const selectedYear = document.getElementById('yearSelector').value;
@@ -490,10 +496,9 @@
 
             const capaAssy2k = calculateCapacity(assyW2k, tatAssy2k, hours);
             const capaTest2k = calculateCapacity(testW2k, tatTest2k, hours, lines2k);
+            const finalCapa2k = Math.min(capaAssy2k, capaTest2k);
             const capaAssy1k = calculateCapacity(assyW1k, tatAssy1k, hours);
             const capaTest1k = calculateCapacity(testW1k, tatTest1k, hours, lines1k);
-            
-            const finalCapa2k = Math.min(capaAssy2k, capaTest2k);
             const finalCapa1k = Math.min(capaAssy1k, capaTest1k);
 
             const totalRfgCapaDaily = finalCapa2k + finalCapa1k;
